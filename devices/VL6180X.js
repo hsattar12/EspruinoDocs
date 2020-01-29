@@ -93,8 +93,8 @@ VL6180X.prototype.write = function(addr,d) {
 VL6180X.prototype.loadSettings = function() {
     // private settings from page 24 of app note
 
-    this.write8(0x0207, 0x01);
-    this.write8(0x0208, 0x01);
+    this.write(0x0207, 0x01);
+    this.write(0x0208, 0x01);
     this.write8(0x0096, 0x00);
     this.write8(0x0097, 0xfd);
     this.write8(0x00e3, 0x00);
