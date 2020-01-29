@@ -96,7 +96,6 @@ VL6180X.prototype.loadSettings = function() {
     this.write8(0x0096, 0x00);
     this.write8(0x0097, 0xfd);
     this.write8(0x00e3, 0x00);
-    console.log('ok');
     this.write8(0x00e4, 0x04);
     this.write8(0x00e5, 0x02);
     this.write8(0x00e6, 0x01);
