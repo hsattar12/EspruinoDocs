@@ -1,8 +1,10 @@
 /* Copyright (c) 2020 Salvatore Castelbuono. See the file LICENSE for copying permission. */
 
 var C = {
-  VL6180X_REG_I2C_ADDR: 0x0212,                                // Device model identification number
-  VL6180X_REG_IDENTIFICATION_MODEL_ID: 0x000,
+  
+  VL6180X_DEFAULT_I2C_ADDR: 0x29,
+  VL6180X_REG_I2C_ADDR: 0x0212,                                
+  VL6180X_REG_IDENTIFICATION_MODEL_ID: 0x000,                  // Device model identification number
   VL6180X_REG_SYSTEM_INTERRUPT_CONFIG: 0x014,                  // Interrupt configuration
   VL6180X_REG_SYSTEM_INTERRUPT_CLEAR: 0x015,                   // Interrupt clear bits
   VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET: 0x016,                // Fresh out of reset bit
@@ -43,11 +45,11 @@ var C = {
 function VL6180X(i2c, options) {
     this.options = options||{};
     this.i2c = i2c;
-    this.ad = 0x29>>1;
+    this.ad = C.VL6180X_DEFAULT_I2C_ADDR>>1;
     if (this.options.address) {
     // Change I2C address, if specified in options
      this.ad = this.options.address>>1;
-     this.i2c.writeTo(0x29>>1, C.VL6180X_REG_I2C_ADDR, this.ad);
+     this.i2c.writeTo(C.VL6180X_DEFAULT_I2C_ADDR>>1, C.VL6180X_REG_I2C_ADDR, this.ad);
     }
     this.loadSettings();
 }
