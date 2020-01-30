@@ -160,7 +160,8 @@ VL6180X.prototype.readRange = function() {
 //Range status function
 
 VL6180X.prototype.readRangeStatus = function() {
-  return (this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS) >> 4);
+  var status = this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS) >> 4;
+  return status;
 };
 
 exports.connect = function(i2c, options) {
