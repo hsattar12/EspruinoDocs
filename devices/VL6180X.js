@@ -46,8 +46,7 @@ function VL6180X(i2c, options) {
     this.options = options||{};
     this.i2c = i2c;
     this.ad = C.VL6180X_DEFAULT_I2C_ADDR>>1;
-    if (this.options.address) {
-    // Change I2C address, if specified in options
+    if (this.options.address) {                                // Change I2C address, if specified in options
      this.ad = this.options.address>>1;
      this.i2c.writeTo(C.VL6180X_DEFAULT_I2C_ADDR>>1, C.VL6180X_REG_I2C_ADDR, this.ad);
     }
@@ -95,6 +94,7 @@ VL6180X.prototype.loadSettings = function() {
 
     this.write8(0x0207, 0x01);
     this.write8(0x0208, 0x01);
+    this.write8(0x0133, 0x01);
     this.write8(0x0096, 0x00);
     this.write8(0x0097, 0xfd);
     this.write8(0x00e3, 0x00);
@@ -119,25 +119,25 @@ VL6180X.prototype.loadSettings = function() {
     this.write8(0x00ff, 0x05);
     this.write8(0x0100, 0x05);
     this.write8(0x0199, 0x05);
+    this.write8(0x0109, 0x07);
+    this.write8(0x003f, 0x46);                   // Sets the light and dark gain (upper nibble). Dark gain should not be changed.
+    this.write8(0x010a, 0x30);                   // Set the averaging sample period (compromise between lower noise increased execution time)
     this.write8(0x01a6, 0x1b);
     this.write8(0x01ac, 0x3e);
     this.write8(0x01a7, 0x1f);
+    this.write8(0x0103, 0x01);
     this.write8(0x0030, 0x00);
-
-    // Recommended : Public registers
-
+    this.write8(0x001b, 0x0a);                   // Set default ranging inter-measurement  period to 100ms
+    this.write8(0x003e, 0x0a);                   // Set default ALS inter-measurement period to 500ms\
+    this.write8(0x0131, 0x04);
     this.write8(0x0011, 0x10);                   // Enables polling for 'New Sample ready' when measurement completes
-    this.write8(0x010a, 0x30);                   // Set the averaging sample period (compromise between lower noise increased execution time)
-    this.write8(0x003f, 0x46);                   // Sets the light and dark gain (upper nibble). Dark gain should not be changed.
+    this.write8(0x0014, 0x24);                   // Configures interrupt on 'New Sample - Ready threshold event'
     this.write8(0x0031, 0xFF);                   // Sets the # of range measurements after which auto calibration of system is performed
+    this.write8(0x00d2, 0x01);
+    this.write8(0x00f2, 0x01);
+
     this.write8(0x0040, 0x63);                   // Set ALS integration time to 100ms
     this.write8(0x002e, 0x01);                   // perform a single temperature calibration of the ranging sensor
-
-    // Optional: Public registers
-
-    this.write8(0x001b, 0x09);                   // Set default ranging inter-measurement  period to 100ms
-    this.write8(0x003e, 0x31);                   // Set default ALS inter-measurement period to 500ms
-    this.write8(0x0014, 0x24);                   // Configures interrupt on 'New Sample - Ready threshold event'
 };
 
 //Read range function
@@ -159,8 +159,7 @@ VL6180X.prototype.readRange = function() {
 //Range status function
 
 VL6180X.prototype.readRangeStatus = function() {
-  var status = this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS) >> 4;
-  return status;
+  return this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS) >> 4;
 };
 
 exports.connect = function(i2c, options) {
