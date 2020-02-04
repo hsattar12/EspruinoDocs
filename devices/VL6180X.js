@@ -143,6 +143,7 @@ VL6180X.prototype.loadSettings = function() {
 //Read range function
 
 VL6180X.prototype.readRange = function() {
+    
   while (!(this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS) & 0x01));                // wait for device to be ready for range measurement
 
   this.write8(C.VL6180X_REG_SYSRANGE_START, 0x01);                            // Start a range measurement
