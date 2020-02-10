@@ -55,7 +55,11 @@ function VL6180X(i2c, options) {
     }*/
     if (this.read8(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET) == 0x01) {
       this.loadSettings();
+      return true;
     }
+  else{
+    return false;
+  }
     this.write8(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET, 0x00);
 }
 
