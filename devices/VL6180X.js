@@ -51,13 +51,12 @@ function VL6180X(i2c, options) {
      this.i2c.writeTo(C.VL6180X_DEFAULT_I2C_ADDR>>1, C.VL6180X_REG_I2C_ADDR, this.ad);
     }
     if (this.read8(C.VL6180X_REG_IDENTIFICATION_MODEL_ID) != 0xB4) {
-      return false;
+      return this.read8(C.VL6180X_REG_IDENTIFICATION_MODEL_ID);
     }
     if (this.read8(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET) == 0x01) {
       this.loadSettings();
     }
     this.write8(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET, 0x00);
-    return true
 }
 
 //Read and Write 1 byte (8 bit) values 
