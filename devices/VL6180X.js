@@ -56,7 +56,7 @@ function VL6180X(i2c, options) {
     if (this.read8(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET) == 0x01) {
       this.loadSettings();
     }
-    this.write(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET, 0x00);
+    this.write8(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET, 0x00);
 }
 
 //Read and Write 1 byte (8 bit) values 
