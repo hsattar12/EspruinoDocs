@@ -97,51 +97,51 @@ VL6180X.prototype.write = function(addr,d) {
 //Load settings function
 VL6180X.prototype.loadSettings = function() {
     // private settings from APPENDIX 1 - Setup Guide
-  this.write(0x0207, 0x01); 
-  this.write(0x0208, 0x01); 
-  this.write(0x0096, 0x00); 
-  this.write(0x0097, 0xfd); 
-  this.write(0x00e3, 0x01); 
-  this.write(0x00e4, 0x03); 
-  this.write(0x00e5, 0x02); 
-  this.write(0x00e6, 0x01); 
-  this.write(0x00e7, 0x03); 
-  this.write(0x00f5, 0x02); 
-  this.write(0x00d9, 0x05); 
-  this.write(0x00db, 0xce); 
-  this.write(0x00dc, 0x03); 
-  this.write(0x00dd, 0xf8); 
-  this.write(0x009f, 0x00); 
-  this.write(0x00a3, 0x3c); 
-  this.write(0x00b7, 0x00); 
-  this.write(0x00bb, 0x3c); 
-  this.write(0x00b2, 0x09); 
-  this.write(0x00ca, 0x09); 
-  this.write(0x0198, 0x01); 
-  this.write(0x01b0, 0x17); 
-  this.write(0x01ad, 0x00); 
-  this.write(0x00ff, 0x05); 
-  this.write(0x0100, 0x05); 
-  this.write(0x0199, 0x05); 
-  this.write(0x01a6, 0x1b); 
-  this.write(0x01ac, 0x3e); 
-  this.write(0x01a7, 0x1f); 
-  this.write(0x0030, 0x00);
+  this.write8(0x0207, 0x01); 
+  this.write8(0x0208, 0x01); 
+  this.write8(0x0096, 0x00); 
+  this.write8(0x0097, 0xfd); 
+  this.write8(0x00e3, 0x01); 
+  this.write8(0x00e4, 0x03); 
+  this.write8(0x00e5, 0x02); 
+  this.write8(0x00e6, 0x01); 
+  this.write8(0x00e7, 0x03); 
+  this.write8(0x00f5, 0x02); 
+  this.write8(0x00d9, 0x05); 
+  this.write8(0x00db, 0xce); 
+  this.write8(0x00dc, 0x03); 
+  this.write8(0x00dd, 0xf8); 
+  this.write8(0x009f, 0x00); 
+  this.write8(0x00a3, 0x3c); 
+  this.write8(0x00b7, 0x00); 
+  this.write8(0x00bb, 0x3c); 
+  this.write8(0x00b2, 0x09); 
+  this.write8(0x00ca, 0x09); 
+  this.write8(0x0198, 0x01); 
+  this.write8(0x01b0, 0x17); 
+  this.write8(0x01ad, 0x00); 
+  this.write8(0x00ff, 0x05); 
+  this.write8(0x0100, 0x05); 
+  this.write8(0x0199, 0x05); 
+  this.write8(0x01a6, 0x1b); 
+  this.write8(0x01ac, 0x3e); 
+  this.write8(0x01a7, 0x1f); 
+  this.write8(0x0030, 0x00);
   
   //Recommended : Public registers - See data sheet for more detail
   
-  this.write(0x0011, 0x10);        // Enables polling for ‘New Sample ready’  when measurement completes 
-  this.write(0x010a, 0x30);        // Set the averaging sample period(compromise between lower noise and increased execution time) 
-  this.write(0x003f, 0x46);        // Sets the light and dark gain (upper nibble). Dark gain should not be changed. 
-  this.write(0x0031, 0xFF);        // sets the # of range measurements after which auto calibration of system is performed 
-  this.write(0x0041, 0x63);        // Set ALS integration time to 100ms
-  this.write(0x002e, 0x01);        // perform a single temperature calibration // of the ranging sensor 
+  this.write8(0x0011, 0x10);        // Enables polling for ‘New Sample ready’  when measurement completes 
+  this.write8(0x010a, 0x30);        // Set the averaging sample period(compromise between lower noise and increased execution time) 
+  this.write8(0x003f, 0x46);        // Sets the light and dark gain (upper nibble). Dark gain should not be changed. 
+  this.write8(0x0031, 0xFF);        // sets the # of range measurements after which auto calibration of system is performed 
+  this.write8(0x0041, 0x63);        // Set ALS integration time to 100ms
+  this.write8(0x002e, 0x01);        // perform a single temperature calibration // of the ranging sensor 
   
   //Optional: Public registers - See data sheet for more detail 
   
-  this.write(0x001b, 0x09);        // Set default ranging inter-measurement period to 100ms 
-  this.write(0x003e, 0x31);        // Set default ALS inter-measurement period to 500ms 
-  this.write(0x0014, 0x24);        // Configures interrupt on ‘New Sample Ready threshold event’   
+  this.write8(0x001b, 0x09);        // Set default ranging inter-measurement period to 100ms 
+  this.write8(0x003e, 0x31);        // Set default ALS inter-measurement period to 500ms 
+  this.write8(0x0014, 0x24);        // Configures interrupt on ‘New Sample Ready threshold event’   
 };
 
 //Read range function
@@ -150,13 +150,13 @@ VL6180X.prototype.readRange = function() {
     
   while(!(this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS) & 0x01));             // wait for device to be ready for range measurement
   
-  this.write(C.VL6180X_REG_SYSRANGE_START, 0x01);                             // Start a range measurement
+  this.write8(C.VL6180X_REG_SYSRANGE_START, 0x01);                             // Start a range measurement
   
   while(!(this.read8(C.VL6180X_REG_RESULT_INTERRUPT_STATUS_GPIO) & 0x04));    // Poll until bit 2 is set
     
   var range = this.read8(C.VL6180X_REG_RESULT_RANGE_VAL);                     // read range in mm
     
-  this.write(C.VL6180X_REG_SYSTEM_INTERRUPT_CLEAR, 0x07);                     // clear interrupt
+  this.write8(C.VL6180X_REG_SYSTEM_INTERRUPT_CLEAR, 0x07);                     // clear interrupt
     
   return range;
 };
