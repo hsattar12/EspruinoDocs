@@ -145,7 +145,7 @@ VL6180X.prototype.loadSettings = function() {
 };
 
 //Read range function
-
+/*
 VL6180X.prototype.readRange = function() {
     
   while(!(this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS) & 0x01));             // wait for device to be ready for range measurement
@@ -159,6 +159,55 @@ VL6180X.prototype.readRange = function() {
   this.write8(C.VL6180X_REG_SYSTEM_INTERRUPT_CLEAR, 0x07);                     // clear interrupt
     
   return range;
+};*/
+
+// Read range function - expects callback with two (2) args:
+// - err: error code of module: 32 not ready for | 64 not completed measurement
+// - val: range in mm if module err == 0 else device error code (see Table 12)
+
+VL6180X.prototype.readRange = function(cb) {
+  var rc = this._readRangeRC.bind(this);                                    // ready check as funct w/ obj context
+  rc(5,10,rc,cb);                                                           // 5 tries, each retry 10ms (rcTimeoutTime) deferred
+};
+
+VL6180X.prototype._readRangeRC(triesLeft,rcTimeoutTime,rc,cb){
+  // ready check for measurement - and start measurement
+  
+  var s = this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS);
+  
+  if(s & 0x01){                                                             // ready for measurement
+    this.write8(C.VL6180X_REG_SYSRANGE_START, 0x01);                        // start measurement
+    var cc = this._readRangeCC.bind(this);                                  // check completion as f w/ obj ctx
+    cc(6,12,cc,cb);                                                         // 6 tries, each retry 12ms (ccTimeoutTime) deferred
+  } 
+  else{                                                                     // not ready yet for measurement
+    if(--triesLeft>0){                                                      // retry ready check delayed/deferred
+       setTimeout(rc,rcTimeoutTime,triesLeft,rcTimeoutTime,rc,cb);          // retry
+    } 
+    else{
+       cb(32,s);                                                            // err in module = 32 / 0x20: not ready within... 
+    }                                                                       // ...tries-1 x rcTimeoutTime, device err code in val;
+  }                                                                         // alternative: cb(32|s); combined err and undefined for val
+};
+
+VL6180X.prototype._readRangeCC(triesLeft,ccTimeoutTime,cc,cb) {
+  // completion check for measurement - and read measurement and clear interrupt
+  
+  var s = this.read8(C.VL6180X_REG_RESULT_INTERRUPT_STATUS_GPIO);
+  
+  if(s & 0x04){                                                            // completed measurement
+    var range = this.read8(C.VL6180X_REG_RESULT_RANGE_VAL);                // read range in mm
+    this.write8(C.VL6180X_REG_SYSTEM_INTERRUPT_CLEAR, 0x07);               // clear interrupt
+    cb(0,range);                                                           // module and device err = 0, measured range in val
+  } 
+  else{                                                                    // not completed measurement yet
+    if (--triesLeft>0){                                                    // retry completion check delayed/deferred
+       setTimeout(cc,ccTimeoutTime,triesLeft,ccTimeoutTime,cc,cb);         // retry
+    } 
+    else{
+       cb(64,s);                                                           // err in module = 64 / 0x40: not completed within...
+    }                                                                      // ...tries-1 x ccTimeoutTime, device err code in val;
+  }                                                                        // alternative: cb(64|s); combined err and undefined for val
 };
 
 //Range status function
