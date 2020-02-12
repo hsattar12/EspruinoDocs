@@ -148,13 +148,13 @@ VL6180X.prototype.loadSettings = function() {
 
 VL6180X.prototype.readRange = function() {
     
-  while(!(this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS) & 0x01));             // wait for device to be ready for range measurement
-  console.log("Ready");  
+  while(!(this.read(C.VL6180X_REG_RESULT_RANGE_STATUS) & 0x01));             // wait for device to be ready for range measurement
+  
   this.write8(C.VL6180X_REG_SYSRANGE_START, 0x01);                             // Start a range measurement
- 
-  while(!(this.read8(C.VL6180X_REG_RESULT_INTERRUPT_STATUS_GPIO) & 0x04));    // Poll until bit 2 is set
+  console.log("Ready");  
+  while(!(this.read(C.VL6180X_REG_RESULT_INTERRUPT_STATUS_GPIO) & 0x04));    // Poll until bit 2 is set
   console.log("POLL"); 
-  var range = this.read8(C.VL6180X_REG_RESULT_RANGE_VAL);                     // read range in mm
+  var range = this.read(C.VL6180X_REG_RESULT_RANGE_VAL);                     // read range in mm
     
   this.write8(C.VL6180X_REG_SYSTEM_INTERRUPT_CLEAR, 0x07);                     // clear interrupt
     
