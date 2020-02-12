@@ -178,7 +178,7 @@ VL6180X.prototype.readRange = function(cb){
 VL6180X.prototype._readRangeRC = function(triesLeft,rcTimeoutTime,rc,cb){
   // ready check for measurement - and start measurement
   
-  var s = this.read(C.VL6180X_REG_RESULT_RANGE_STATUS);
+  var s = this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS);
   
   if(s & 0x01){                                                             // ready for measurement   
     console.log("RC ok");
@@ -199,7 +199,7 @@ VL6180X.prototype._readRangeRC = function(triesLeft,rcTimeoutTime,rc,cb){
 VL6180X.prototype._readRangeCC = function(triesLeft,ccTimeoutTime,cc,cb) {
   // completion check for measurement - and read measurement and clear interrupt
   
-  var s = this.read(C.VL6180X_REG_RESULT_INTERRUPT_STATUS_GPIO);
+  var s = this.read8(C.VL6180X_REG_RESULT_INTERRUPT_STATUS_GPIO);
   
   if(s & 0x04){                                                            // completed measurement
     console.log("CC ok");
@@ -220,7 +220,7 @@ VL6180X.prototype._readRangeCC = function(triesLeft,ccTimeoutTime,cc,cb) {
 //Range status function
 
 VL6180X.prototype.readRangeStatus = function() {
-  var status = this.read(C.VL6180X_REG_RESULT_RANGE_STATUS) >> 4
+  var status = this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS) >> 4
   return status;
 };
 
