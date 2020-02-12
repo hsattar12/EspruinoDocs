@@ -187,7 +187,7 @@ VL6180X.prototype._readRangeRC = function(triesLeft,rcTimeoutTime,rc,cb){
        setTimeout(rc,rcTimeoutTime,triesLeft,rcTimeoutTime,rc,cb);          // retry
     } 
     else{
-       cb(32,s);                                                            // err in module = 32 / 0x20: not ready within... 
+       cb(128,s);                                                            // err in module = 32 / 0x20: not ready within... 
     }                                                                       // ...tries-1 x rcTimeoutTime, device err code in val;
   }                                                                         // alternative: cb(32|s); combined err and undefined for val
 };
@@ -207,7 +207,7 @@ VL6180X.prototype._readRangeCC = function(triesLeft,ccTimeoutTime,cc,cb) {
        setTimeout(cc,ccTimeoutTime,triesLeft,ccTimeoutTime,cc,cb);         // retry
     } 
     else{
-       cb(64,s);                                                           // err in module = 64 / 0x40: not completed within...
+       cb(256,s);                                                           // err in module = 64 / 0x40: not completed within...
     }                                                                      // ...tries-1 x ccTimeoutTime, device err code in val;
   }                                                                        // alternative: cb(64|s); combined err and undefined for val
 };
