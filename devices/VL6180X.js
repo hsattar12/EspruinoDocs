@@ -146,7 +146,7 @@ VL6180X.prototype.loadSettings = function() {
 
 //Read range function
 
-VL6180X.prototype.readRange = function() {
+/*VL6180X.prototype.readRange = function() {
     
   while(!(this.read(C.VL6180X_REG_RESULT_RANGE_STATUS) & 0x01));             // wait for device to be ready for range measurement
   
@@ -159,12 +159,12 @@ VL6180X.prototype.readRange = function() {
   this.write8(C.VL6180X_REG_SYSTEM_INTERRUPT_CLEAR, 0x07);                     // clear interrupt
     
   return range;
-};
+};*/
 
 // Read range function - expects callback with two (2) args:
 // - err: error code of module: 32 not ready for | 64 not completed measurement
 // - val: range in mm if module err == 0 else device error code (see Table 12)
-/*
+
 VL6180X.prototype.readRange = function(cb){
   
   var rc = this._readRangeRC.bind(this);                                    // ready check as funct w/ obj context
@@ -211,7 +211,7 @@ VL6180X.prototype._readRangeCC = function(triesLeft,ccTimeoutTime,cc,cb) {
     }                                                                      // ...tries-1 x ccTimeoutTime, device err code in val;
   }                                                                        // alternative: cb(64|s); combined err and undefined for val
 };
-*/
+
 //Range status function
 
 VL6180X.prototype.readRangeStatus = function() {
