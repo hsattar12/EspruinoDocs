@@ -168,7 +168,7 @@ VL6180X.prototype.readRange = function() {
 VL6180X.prototype.readRange = function(cb){
   
   var rc = this._readRangeRC.bind(this);                                    // ready check as funct w/ obj context
-  rc(10,10,rc,cb);                                                           // 5 tries, each retry 10ms (rcTimeoutTime) deferred
+  rc(5,10,rc,cb);                                                           // 5 tries, each retry 10ms (rcTimeoutTime) deferred
 
 };
 
@@ -180,7 +180,7 @@ VL6180X.prototype._readRangeRC = function(triesLeft,rcTimeoutTime,rc,cb){
   if(s & 0x01){                                                             // ready for measurement   
     this.write8(C.VL6180X_REG_SYSRANGE_START, 0x01);                        // start measurement
     var cc = this._readRangeCC.bind(this);                                  // check completion as f w/ obj ctx
-    cc(10,12,cc,cb);                                                         // 6 tries, each retry 12ms (ccTimeoutTime) deferred   
+    cc(6,12,cc,cb);                                                         // 6 tries, each retry 12ms (ccTimeoutTime) deferred   
   } 
   else{                                                                     // not ready yet for measurement
     if(--triesLeft>0){                                                      // retry ready check delayed/deferred
