@@ -57,9 +57,6 @@ function VL6180X(i2c, options) {
       console.log("Load settings");
       this.loadSettings();
     }
-    else{
-      console.log(this.read8(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET));
-    }
     this.write8(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET, 0x00);
 }
 
@@ -205,7 +202,7 @@ VL6180X.prototype._readRangeCC = function(triesLeft,ccTimeoutTime,cc,cb) {
   
   if(s & 0x04){                                                            // completed measurement
     console.log("CC ok");
-    var range = this.read(C.VL6180X_REG_RESULT_RANGE_VAL);                // read range in mm
+    var range = this.read8(C.VL6180X_REG_RESULT_RANGE_VAL);                // read range in mm
     this.write8(C.VL6180X_REG_SYSTEM_INTERRUPT_CLEAR, 0x07);               // clear interrupt
     cb(0,range);                                                           // module and device err = 0, measured range in val
   } 
