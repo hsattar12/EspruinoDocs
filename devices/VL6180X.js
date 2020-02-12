@@ -53,7 +53,7 @@ function VL6180X(i2c, options) {
     if (this.read8(C.VL6180X_REG_IDENTIFICATION_MODEL_ID) != 0xB4){
       console.log(this.read8(C.VL6180X_REG_IDENTIFICATION_MODEL_ID));
     }
-    if (this.read(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET) == 0x01){
+    if (this.read8(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET) == 0x01){
       console.log("Load settings");
       this.loadSettings();
     }
