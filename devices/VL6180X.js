@@ -53,7 +53,7 @@ function VL6180X(i2c, options) {
     //if (this.read8(C.VL6180X_REG_IDENTIFICATION_MODEL_ID) != 0xB4) {
       return this.read(C.VL6180X_REG_IDENTIFICATION_MODEL_ID);
     //}
-    if (this.read8(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET) == 0x01) {
+    if (this.read(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET) == 0x01) {
       this.loadSettings();
     }
     this.write8(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET, 0x00);
@@ -172,10 +172,10 @@ VL6180X.prototype.readRange = function(cb){
 
 };
 
-VL6180X.prototype._readRangeRC(triesLeft,rcTimeoutTime,rc,cb){
+VL6180X.prototype._readRangeRC = function(triesLeft,rcTimeoutTime,rc,cb){
   // ready check for measurement - and start measurement
   
-  var s = this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS);
+  var s = this.read(C.VL6180X_REG_RESULT_RANGE_STATUS);
   
   if(s & 0x01){                                                             // ready for measurement   
     this.write8(C.VL6180X_REG_SYSRANGE_START, 0x01);                        // start measurement
@@ -192,13 +192,13 @@ VL6180X.prototype._readRangeRC(triesLeft,rcTimeoutTime,rc,cb){
   }                                                                         // alternative: cb(32|s); combined err and undefined for val
 };
 
-VL6180X.prototype._readRangeCC(triesLeft,ccTimeoutTime,cc,cb) {
+VL6180X.prototype._readRangeCC = function(triesLeft,ccTimeoutTime,cc,cb) {
   // completion check for measurement - and read measurement and clear interrupt
   
-  var s = this.read8(C.VL6180X_REG_RESULT_INTERRUPT_STATUS_GPIO);
+  var s = this.read(C.VL6180X_REG_RESULT_INTERRUPT_STATUS_GPIO);
   
   if(s & 0x04){                                                            // completed measurement
-    var range = this.read8(C.VL6180X_REG_RESULT_RANGE_VAL);                // read range in mm
+    var range = this.read(C.VL6180X_REG_RESULT_RANGE_VAL);                // read range in mm
     this.write8(C.VL6180X_REG_SYSTEM_INTERRUPT_CLEAR, 0x07);               // clear interrupt
     cb(0,range);                                                           // module and device err = 0, measured range in val
   } 
@@ -215,7 +215,7 @@ VL6180X.prototype._readRangeCC(triesLeft,ccTimeoutTime,cc,cb) {
 //Range status function
 
 VL6180X.prototype.readRangeStatus = function() {
-  return this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS) >> 4;
+  return this.read(C.VL6180X_REG_RESULT_RANGE_STATUS) >> 4;
 };
 
 exports.connect = function(i2c, options) {
