@@ -86,7 +86,7 @@ VL6180X.prototype.write16 = function(reg, value) {
 //Read and Write binary values (HIGH 1, LOW 0)
 
 VL6180X.prototype.read = function(addr,n) {
-  //this.i2c.writeTo(this.ad, addr);
+  this.i2c.writeTo(this.ad, addr);
   return this.i2c.readFrom(this.ad, n);
 };
 VL6180X.prototype.write = function(addr,d) {
