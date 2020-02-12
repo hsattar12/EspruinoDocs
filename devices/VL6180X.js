@@ -47,8 +47,8 @@ function VL6180X(i2c, options) {
     this.i2c = i2c;
     this.ad = C.VL6180X_DEFAULT_I2C_ADDR;
     if (this.options.address) {                                // Change I2C address, if specified in options
+     this.i2c.writeTo(this.address, C.VL6180X_REG_I2C_ADDR, this.option.address);
      this.ad = this.options.address;
-     this.i2c.writeTo(C.VL6180X_DEFAULT_I2C_ADDR, C.VL6180X_REG_I2C_ADDR, this.ad);
     }
     if (this.read8(C.VL6180X_REG_IDENTIFICATION_MODEL_ID) != 0xB4){
       console.log(this.read8(C.VL6180X_REG_IDENTIFICATION_MODEL_ID));
