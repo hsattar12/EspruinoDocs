@@ -51,9 +51,10 @@ function VL6180X(i2c, options) {
      this.i2c.writeTo(C.VL6180X_DEFAULT_I2C_ADDR, C.VL6180X_REG_I2C_ADDR, this.ad);
     }
     //if (this.read8(C.VL6180X_REG_IDENTIFICATION_MODEL_ID) != 0xB4) {
-      return this.read(C.VL6180X_REG_IDENTIFICATION_MODEL_ID);
+    // return this.read(C.VL6180X_REG_IDENTIFICATION_MODEL_ID);
     //}
     if (this.read(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET) == 0x01) {
+      console.log("Load settings");
       this.loadSettings();
     }
     this.write8(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET, 0x00);
