@@ -50,9 +50,9 @@ function VL6180X(i2c, options) {
      this.ad = this.options.address;
      this.i2c.writeTo(C.VL6180X_DEFAULT_I2C_ADDR, C.VL6180X_REG_I2C_ADDR, this.ad);
     }
-    if (this.read8(C.VL6180X_REG_IDENTIFICATION_MODEL_ID) != 0xB4) {
+    //if (this.read8(C.VL6180X_REG_IDENTIFICATION_MODEL_ID) != 0xB4) {
       return this.read(C.VL6180X_REG_IDENTIFICATION_MODEL_ID);
-    }
+    //}
     if (this.read8(C.VL6180X_REG_SYSTEM_FRESH_OUT_OF_RESET) == 0x01) {
       this.loadSettings();
     }
@@ -165,9 +165,11 @@ VL6180X.prototype.readRange = function() {
 // - err: error code of module: 32 not ready for | 64 not completed measurement
 // - val: range in mm if module err == 0 else device error code (see Table 12)
 
-VL6180X.prototype.readRange = function(cb) {
+VL6180X.prototype.readRange = function(cb){
+  
   var rc = this._readRangeRC.bind(this);                                    // ready check as funct w/ obj context
   rc(5,10,rc,cb);                                                           // 5 tries, each retry 10ms (rcTimeoutTime) deferred
+
 };
 
 VL6180X.prototype._readRangeRC(triesLeft,rcTimeoutTime,rc,cb){
@@ -176,9 +178,11 @@ VL6180X.prototype._readRangeRC(triesLeft,rcTimeoutTime,rc,cb){
   var s = this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS);
   
   if(s & 0x01){                                                             // ready for measurement
+    
     this.write8(C.VL6180X_REG_SYSRANGE_START, 0x01);                        // start measurement
     var cc = this._readRangeCC.bind(this);                                  // check completion as f w/ obj ctx
     cc(6,12,cc,cb);                                                         // 6 tries, each retry 12ms (ccTimeoutTime) deferred
+    
   } 
   else{                                                                     // not ready yet for measurement
     if(--triesLeft>0){                                                      // retry ready check delayed/deferred
