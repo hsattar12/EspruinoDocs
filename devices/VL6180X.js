@@ -167,12 +167,12 @@ VL6180X.prototype.readRange = function() {
 
 VL6180X.prototype.readRange = function(cb){
   
-  var rc = this.readRangeRC.bind(this);                                    // ready check as funct w/ obj context
+  var rc = this._readRangeRC.bind(this);                                    // ready check as funct w/ obj context
   rc(5,10,rc,cb);                                                           // 5 tries, each retry 10ms (rcTimeoutTime) deferred
 
 };
 
-VL6180X.prototype.readRangeRC = function(triesLeft,rcTimeoutTime,rc,cb){
+VL6180X.prototype._readRangeRC(triesLeft,rcTimeoutTime,rc,cb){
   // ready check for measurement - and start measurement
   
   var s = this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS);
@@ -180,7 +180,7 @@ VL6180X.prototype.readRangeRC = function(triesLeft,rcTimeoutTime,rc,cb){
   if(s & 0x01){                                                             // ready for measurement
     
     this.write8(C.VL6180X_REG_SYSRANGE_START, 0x01);                        // start measurement
-    var cc = this.readRangeCC.bind(this);                                  // check completion as f w/ obj ctx
+    var cc = this._readRangeCC.bind(this);                                  // check completion as f w/ obj ctx
     cc(6,12,cc,cb);                                                         // 6 tries, each retry 12ms (ccTimeoutTime) deferred
     
   } 
@@ -194,7 +194,7 @@ VL6180X.prototype.readRangeRC = function(triesLeft,rcTimeoutTime,rc,cb){
   }                                                                         // alternative: cb(32|s); combined err and undefined for val
 };
 
-VL6180X.prototype.readRangeCC = function(triesLeft,ccTimeoutTime,cc,cb) {
+VL6180X.prototype._readRangeCC(triesLeft,ccTimeoutTime,cc,cb) {
   // completion check for measurement - and read measurement and clear interrupt
   
   var s = this.read8(C.VL6180X_REG_RESULT_INTERRUPT_STATUS_GPIO);
