@@ -145,24 +145,6 @@ VL6180X.prototype.loadSettings = function() {
   this.write8(0x0014, 0x24);        // Configures interrupt on ‘New Sample Ready threshold event’   
 };
 
-//Read range function
-/*
-VL6180X.prototype.readRange = function() {
-    
-  while(!(this.read(C.VL6180X_REG_RESULT_RANGE_STATUS) & 0x01));             // wait for device to be ready for range measurement
-  
-  this.write8(C.VL6180X_REG_SYSRANGE_START, 0x01);                             // Start a range measurement
-  console.log("Ready");  
-  while(!(this.read(C.VL6180X_REG_RESULT_INTERRUPT_STATUS_GPIO) & 0x04)){
-    console.log(this.read(C.VL6180X_REG_RESULT_INTERRUPT_STATUS_GPIO))};    // Poll until bit 2 is set
-  console.log("POLL"); 
-  var range = this.read(C.VL6180X_REG_RESULT_RANGE_VAL);                     // read range in mm
-    
-  this.write8(C.VL6180X_REG_SYSTEM_INTERRUPT_CLEAR, 0x07);                     // clear interrupt
-    
-  return range;
-};
-*/
 // Read range function - expects callback with two (2) args:
 // - err: error code of module: 32 not ready for | 64 not completed measurement
 // - val: range in mm if module err == 0 else device error code (see Table 12)
