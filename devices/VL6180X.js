@@ -177,12 +177,10 @@ VL6180X.prototype._readRangeRC(triesLeft,rcTimeoutTime,rc,cb){
   
   var s = this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS);
   
-  if(s & 0x01){                                                             // ready for measurement
-    
+  if(s & 0x01){                                                             // ready for measurement   
     this.write8(C.VL6180X_REG_SYSRANGE_START, 0x01);                        // start measurement
     var cc = this._readRangeCC.bind(this);                                  // check completion as f w/ obj ctx
-    cc(6,12,cc,cb);                                                         // 6 tries, each retry 12ms (ccTimeoutTime) deferred
-    
+    cc(6,12,cc,cb);                                                         // 6 tries, each retry 12ms (ccTimeoutTime) deferred   
   } 
   else{                                                                     // not ready yet for measurement
     if(--triesLeft>0){                                                      // retry ready check delayed/deferred
