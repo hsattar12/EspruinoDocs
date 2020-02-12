@@ -215,7 +215,8 @@ VL6180X.prototype._readRangeCC = function(triesLeft,ccTimeoutTime,cc,cb) {
 //Range status function
 
 VL6180X.prototype.readRangeStatus = function() {
-  return this.read(C.VL6180X_REG_RESULT_RANGE_STATUS) >> 4;
+  var status = this.read(C.VL6180X_REG_RESULT_RANGE_STATUS) >> 4
+  return status;
 };
 
 exports.connect = function(i2c, options) {
