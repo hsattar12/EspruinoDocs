@@ -178,6 +178,7 @@ VL6180X.prototype._readRangeRC = function(triesLeft,rcTimeoutTime,rc,cb){
   var s = this.read(C.VL6180X_REG_RESULT_RANGE_STATUS);
   
   if(s & 0x01){                                                             // ready for measurement   
+    console.log("RC ok");
     this.write8(C.VL6180X_REG_SYSRANGE_START, 0x01);                        // start measurement
     var cc = this._readRangeCC.bind(this);                                  // check completion as f w/ obj ctx
     cc(6,12,cc,cb);                                                         // 6 tries, each retry 12ms (ccTimeoutTime) deferred   
@@ -198,6 +199,7 @@ VL6180X.prototype._readRangeCC = function(triesLeft,ccTimeoutTime,cc,cb) {
   var s = this.read(C.VL6180X_REG_RESULT_INTERRUPT_STATUS_GPIO);
   
   if(s & 0x04){                                                            // completed measurement
+    console.log("CC ok");
     var range = this.read(C.VL6180X_REG_RESULT_RANGE_VAL);                // read range in mm
     this.write8(C.VL6180X_REG_SYSTEM_INTERRUPT_CLEAR, 0x07);               // clear interrupt
     cb(0,range);                                                           // module and device err = 0, measured range in val
