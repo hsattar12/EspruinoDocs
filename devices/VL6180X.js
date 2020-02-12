@@ -215,7 +215,7 @@ VL6180X.prototype._readRangeCC = function(triesLeft,ccTimeoutTime,cc,cb) {
     }                                                                      // ...tries-1 x ccTimeoutTime, device err code in val;
   }                                                                        // alternative: cb(64|s); combined err and undefined for val
 };
-*/
+
 //Range status function
 
 VL6180X.prototype.readRangeStatus = function() {
