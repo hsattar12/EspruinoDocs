@@ -172,7 +172,7 @@ VL6180X.prototype.readRange = function(cb){
 
 };
 
-VL6180X.prototype._readRangeRC = function(triesLeft,rcTimeoutTime,rc,cb){
+VL6180X.prototype._readRangeRC(triesLeft,rcTimeoutTime,rc,cb){
   // ready check for measurement - and start measurement
   
   var s = this.read8(C.VL6180X_REG_RESULT_RANGE_STATUS);
@@ -192,7 +192,7 @@ VL6180X.prototype._readRangeRC = function(triesLeft,rcTimeoutTime,rc,cb){
   }                                                                         // alternative: cb(32|s); combined err and undefined for val
 };
 
-VL6180X.prototype._readRangeCC = function(triesLeft,ccTimeoutTime,cc,cb) {
+VL6180X.prototype._readRangeCC(triesLeft,ccTimeoutTime,cc,cb) {
   // completion check for measurement - and read measurement and clear interrupt
   
   var s = this.read8(C.VL6180X_REG_RESULT_INTERRUPT_STATUS_GPIO);
